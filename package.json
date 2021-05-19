@@ -1,15 +1,40 @@
 {
-  "name": "react-typescript-bundle",
+  "name": "react-electron-bundle",
   "version": "1.0.0",
-  "author": "keisokoo",
-  "url": "https://github.com/keisokoo/react-typescript-bundle",
+  "private": true,
+  "url": "https://github.com/keisokoo/react-electron-bundle",
   "email": "keisokoo@gmail.com",
   "description": "",
   "license": "ISC",
-  "main": "index.js",
+  "main": "public/electron.js",
+  "author": {
+    "name": "keisokoo",
+    "email": "keisokoo@gmail.com",
+    "url": "https://obj.kr"
+  },
+  "build": {
+    "appId": "com.objkr.bundle",
+    "productName": "bundleobjkr",
+    "copyright": "Copyright © 2021 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "files": [
+      "**/*",
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "build"
+    }
+  },
   "scripts": {
     "start": "webpack serve --mode=development",
-    "build": "webpack --mode=production"
+    "build": "webpack --mode=production",
+    "electron": "concurrently \"webpack serve --mode=development --open=false\" \"wait-on http://localhost:3000 && electron .\"",
+    "postinstall": "electron-builder install-app-deps",
+    "dist": "electron-builder --dir",
+    "pack": "webpack --mode=production && electron-builder -m"
   },
   "eslintConfig": {
     "extends": [
@@ -18,8 +43,10 @@
     ]
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.5.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",
@@ -29,13 +56,17 @@
     "@babel/preset-typescript": "^7.13.0",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.5",
+    "@types/react-redux": "^7.1.16",
     "@typescript-eslint/eslint-plugin": "^4.24.0",
     "@typescript-eslint/parser": "^4.24.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
+    "concurrently": "^6.1.0",
     "core-js": "^3.12.1",
     "css-loader": "^5.2.4",
     "css-minimizer-webpack-plugin": "^3.0.0",
+    "electron": "^12.0.8",
+    "electron-builder": "^22.10.5",
     "eslint": "^7.26.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-react-app": "^6.0.0",
@@ -57,6 +88,7 @@
     "terser-webpack-plugin": "^5.1.2",
     "ts-loader": "^9.1.2",
     "typescript": "^4.2.4",
+    "wait-on": "^5.3.0",
     "webpack": "^5.37.0",
     "webpack-cli": "^4.7.0",
     "webpack-dev-server": "^3.11.2"
