@@ -3,21 +3,31 @@ import { ipcRenderer } from 'electron'
 
 console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
 
-ipcRenderer.on('asynchronous-reply', (event, arg) => {
-  console.log(arg) // prints "pong"
-})
 const App = () => {
-  React.useEffect(() => {}, [])
+  const [dirPath, set_dirPath] = React.useState([] as any[])
+  React.useEffect(() => {
+    ipcRenderer.on('asynchronous-reply', (event, arg) => {
+      console.log(arg) // prints "pong"
+      set_dirPath(arg)
+    })
+  }, [])
   return (
     <div id="main">
-      <header>Hello World!</header>
-      <button
-        onClick={() => {
-          ipcRenderer.send('asynchronous-message', 'ping')
-        }}
-      >
-        TEST
-      </button>
+      <div>
+        <div>
+          {dirPath?.length > 0 &&
+            dirPath.map((item) => <div key={item}>{item}</div>)}
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              ipcRenderer.send('asynchronous-message', 'ping')
+            }}
+          >
+            TEST
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

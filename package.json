@@ -29,9 +29,8 @@
     }
   },
   "scripts": {
-    "start": "webpack serve --mode=development",
-    "build": "webpack --mode=production",
     "electron": "concurrently \"webpack serve --mode=development --open=false\" \"wait-on http://localhost:3000 && electron .\"",
+    "build": "webpack --mode=production",
     "postinstall": "electron-builder install-app-deps",
     "dist": "electron-builder --dir",
     "pack": "webpack --mode=production && electron-builder -m"

@@ -1,13 +1,13 @@
 const electron = require('electron')
 const { ipcMain, dialog } = require('electron')
 ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log(arg) // prints "ping"
+  console.log(arg)
   dialog
     .showOpenDialog({
       properties: ['openDirectory', 'multiSelections'],
     })
     .then((res) => {
-      event.reply('asynchronous-reply', res.filePaths[0])
+      event.reply('asynchronous-reply', res.filePaths)
     })
 })
 

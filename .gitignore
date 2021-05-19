@@ -5,6 +5,8 @@ logs
 **/*.back.*
 .idea/
 
+react-electron-bundle-*.tgz
+
 dist
 node_modules
 build
