@@ -9,6 +9,7 @@ const node_env = process.env.NODE_ENV ?? 'development'
 
 module.exports = () => {
   return {
+    target: 'electron-main',
     mode: node_env,
     entry: './src/index.tsx',
     optimization: {

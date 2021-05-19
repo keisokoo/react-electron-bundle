@@ -1,4 +1,20 @@
 const electron = require('electron')
+const { ipcMain, dialog } = require('electron')
+ipcMain.on('asynchronous-message', (event, arg) => {
+  console.log(arg) // prints "ping"
+  dialog
+    .showOpenDialog({
+      properties: ['openDirectory', 'multiSelections'],
+    })
+    .then((res) => {
+      event.reply('asynchronous-reply', res.filePaths[0])
+    })
+})
+
+ipcMain.on('synchronous-message', (event, arg) => {
+  console.log('init', arg) // prints "ping"
+  event.returnValue = 'pong'
+})
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 
@@ -12,7 +28,15 @@ const isDev = isEnvSet ? getFromEnv : !app.isPackaged
 let mainWindow
 
 function createWindow() {
-  mainWindow = new BrowserWindow({ width: 900, height: 680 })
+  mainWindow = new BrowserWindow({
+    width: 900,
+    height: 680,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  })
   mainWindow.loadURL(
     isDev
       ? 'http://localhost:3000'
